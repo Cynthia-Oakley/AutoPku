@@ -35,6 +35,7 @@ skill: autopku <任务> [参数]
 |------|------|------|
 | `sync` | 同步所有课程通知 | `skill: autopku sync` |
 | `do` | 完成指定课程作业 | `skill: autopku do 简明量子力学` |
+| `notes` | 撰写课程笔记 | `skill: autopku notes 逻辑导论` |
 
 ## 任务详情
 
@@ -75,6 +76,27 @@ skill: autopku <任务> [参数]
 - `{课程}/作业/{作业}_answer.pdf`
 - 教学网提交状态
 
+### notes - 撰写课程笔记
+
+读取课件 PDF，使用 Agent Team 并行撰写精简数学笔记，去除历史/故事等噪声。
+
+**引用**: `sub-skills/tasks/write-notes.md`
+
+**流程**:
+1. **用户询问**: 选择课件范围、详细程度、额外选项
+2. **并行解析**: 每个 PDF 创建 writer agent → `tools/pdf-reader.md`
+3. **内容筛选**: 保留 motivation/定义/定理/证明/结论，去除历史/故事/用例
+4. **生成索引**: `notes/README.md`
+
+**笔记特点**:
+- 聚焦数学核心：形式化定义、精确定理、关键证明步骤
+- 去除噪声：历史背景、哲学家轶事、复杂无关概念解释
+- 格式规范：标准 Markdown + LaTeX 公式
+
+**输出**:
+- `notes/{lecture_name}.md`（每个课件一个）
+- `notes/README.md`（索引和速查）
+
 ## 子技能索引
 
 ### 运行时 (`sub-skills/runtime/`)
@@ -92,6 +114,7 @@ skill: autopku <任务> [参数]
 ### 任务 (`sub-skills/tasks/`)
 - `sync-notices.md` - 同步课程通知
 - `do-homework.md` - 完成作业（解析→解答→渲染→提交）
+- `write-notes.md` - 撰写课程笔记（数学核心内容提取）
 
 ## 环境适配
 
