@@ -1348,3 +1348,38 @@ skill: autopku 简明量子力学 hw5
 /tmp/pku3b a ls --all-term | grep "简明量子力学"
 # 输出：简明量子力学 > 第五次习题 (已完成)
 ```
+
+---
+
+## 附录：PDF 读取工具
+
+PDF 解析器 (pdf_parser) 在解析作业 PDF 时，应使用以下工具方法：
+
+### 快速读取（推荐）
+
+```python
+import fitz  # PyMuPDF
+
+def read_pdf_text(pdf_path, pages=None):
+    """读取PDF文本，pages为页码列表或None(全部)"""
+    doc = fitz.open(pdf_path)
+    result = {}
+    page_range = pages if pages is not None else range(len(doc))
+    for i in page_range:
+        if 0 <= i < len(doc):
+            result[i + 1] = doc[i].get_text()
+    doc.close()
+    return result
+
+# 示例
+content = read_pdf_text("/path/to/homework.pdf")
+print(content[1])  # 第1页内容
+```
+
+### 完整工具类
+
+详见 `.claude/skills/pdf-reader.md`，包含：
+- `PyMuPDF` 高速读取
+- `pdfplumber` 表格提取
+- 图片提取方法
+- 完整 `PDFReader` 工具类
