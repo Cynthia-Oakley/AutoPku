@@ -14,11 +14,8 @@
 !/codex/**/*
 !/images
 !/archive/
-!/docs/
-!/docs/*/
-!/docs/*/*/
-!/docs/*/*/*/
-!/docs/*/*/*/*
+# docs/ 在 main 分支被忽略，文档网站托管在独立的 docs 分支
+docs/
 # 汇总报告（自动生成）
 通知摘要汇总.md
 
