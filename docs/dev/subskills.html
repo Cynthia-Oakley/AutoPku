@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sub-skills 参考 — AutoPku</title>
+  <meta name="description" content="AutoPku Sub-skills 完整参考：Tasks、Tools、Runtime 分类索引">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">&#9632;</span>
+        <span>AutoPku</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../index.html">首页</a></li>
+          <li><a href="../user/index.html">使用指南</a></li>
+          <li><a href="./index.html" class="active">一起共建</a></li>
+          <li><a href="https://github.com/ICUlizhi/AutoPku" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        </ul>
+      </nav>
+      <div style="display:flex;align-items:center;gap:var(--space-4);">
+        <button class="theme-toggle" aria-label="切换主题">
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+        <button class="mobile-menu-btn" aria-label="菜单">&#9776;</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="doc-layout">
+    <aside class="doc-sidebar">
+      <div class="sidebar-title">一起共建</div>
+      <ul class="sidebar-nav">
+        <li><a href="./index.html">一起共建首页</a></li>
+        <li><a href="./prepare.html">准备工作</a></li>
+        <li><a href="./workflow.html">开发全流程</a></li>
+        <li><a href="./changelog.html">更新日志</a></li>
+      </ul>
+      <div class="sidebar-title">进阶</div>
+      <ul class="sidebar-nav">
+        <li><a href="./architecture.html">架构设计</a></li>
+        <li><a href="./subskills.html" class="active">Sub-skills 参考</a></li>
+      </ul>
+      <div class="sidebar-title">更多</div>
+      <ul class="sidebar-nav">
+        <li><a href="../user/index.html">使用者指南 &#8594;</a></li>
+        <li><a href="../index.html">&#8592; 返回首页</a></li>
+      </ul>
+    </aside>
+
+    <main class="doc-main">
+      <div class="doc-content">
+        <h1 class="gradient-text">Sub-skills 参考</h1>
+        <p>Sub-skills 是 AutoPku 的功能原子单元，按职责分为 <strong>Tasks</strong>（任务流）、<strong>Tools</strong>（可复用工具）和 <strong>Runtime</strong>（运行时抽象）三类。</p>
+
+        <h2>Tasks <span class="tag tag-cyan">任务执行流</span></h2>
+        <p>Tasks 面向终端用户意图，每个 task 对应一个完整的端到端工作流。</p>
+        <table>
+          <thead>
+            <tr>
+              <th>任务</th>
+              <th>文件</th>
+              <th>说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>同步通知</td>
+              <td><code>tasks/sync-notices.md</code></td>
+              <td>获取作业/公告，生成摘要，并行处理课程</td>
+            </tr>
+            <tr>
+              <td>完成作业</td>
+              <td><code>tasks/do-homework.md</code></td>
+              <td>解析 PDF &#8594; 解答 &#8594; 渲染 &#8594; 询问用户 &#8594; 提交</td>
+            </tr>
+            <tr>
+              <td>撰写笔记</td>
+              <td><code>tasks/write-notes.md</code></td>
+              <td>从课件提取数学核心，去除噪声</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout info">
+          <div class="callout-title">&#128161; 扩展指南：新增 Task</div>
+          <p>在 <code>sub-skills/tasks/</code> 下新建 <code>&lt;your-task&gt;.md</code>，描述触发条件、执行步骤、输入输出。然后在 <code>skill.md</code> 主入口中注册意图匹配规则。</p>
+        </div>
+
+        <h2>Tools <span class="tag tag-purple">可复用工具</span></h2>
+        <p>Tools 提供底层能力封装，供 Tasks 或开发者直接调用。</p>
+        <table>
+          <thead>
+            <tr>
+              <th>工具</th>
+              <th>文件</th>
+              <th>说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>pku3b 配置</td>
+              <td><code>tools/pku3b-setup.md</code></td>
+              <td>安装、登录、命令参考</td>
+            </tr>
+            <tr>
+              <td>数据解析</td>
+              <td><code>tools/data-parser.md</code></td>
+              <td>ANSI 颜色码处理、正则提取</td>
+            </tr>
+            <tr>
+              <td>PDF 读取</td>
+              <td><code>tools/pdf-reader.md</code></td>
+              <td>PyMuPDF / pdfplumber 代码示例</td>
+            </tr>
+            <tr>
+              <td>Agent 模板</td>
+              <td><code>tools/agent-helpers.md</code></td>
+              <td>Coordinator / Parser / Solver / Writer / Submitter Prompts</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout info">
+          <div class="callout-title">&#128161; 扩展指南：新增 Tool</div>
+          <p>在 <code>sub-skills/tools/</code> 下新建工具文档，提供可复用的代码片段、配置模板或封装函数。建议在文档顶部标注依赖版本。</p>
+        </div>
+
+        <h2>Runtime <span class="tag tag-pink">运行时抽象</span></h2>
+        <p>Runtime 层屏蔽不同 AI 平台的语法差异，使上层 Tasks 无需关心当前运行在哪个环境中。</p>
+        <table>
+          <thead>
+            <tr>
+              <th>运行时</th>
+              <th>文件</th>
+              <th>说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>环境检测</td>
+              <td><code>runtime/_detect.md</code></td>
+              <td>自动检测 Claude / Codex / Kimi / Fallback</td>
+            </tr>
+            <tr>
+              <td>Agent 创建</td>
+              <td><code>runtime/create-agent.md</code></td>
+              <td>统一跨平台 Agent 创建接口</td>
+            </tr>
+            <tr>
+              <td>Claude Team</td>
+              <td><code>runtime/claude-team.md</code></td>
+              <td>Claude Code Agent Team 语法</td>
+            </tr>
+            <tr>
+              <td>Codex Subagent</td>
+              <td><code>runtime/codex-subagent.md</code></td>
+              <td>Codex native subagent 语法</td>
+            </tr>
+            <tr>
+              <td>Kimi Team</td>
+              <td><code>runtime/kimi-team.md</code></td>
+              <td>Kimi Code CLI Agent Team 语法</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout info">
+          <div class="callout-title">&#128161; 扩展指南：新增 Runtime</div>
+          <p>当未来出现新的 AI 运行时时，在 <code>sub-skills/runtime/</code> 下新增平台适配文档，并更新 <code>_detect.md</code> 的检测逻辑和 <code>create-agent.md</code> 的统一接口。</p>
+        </div>
+
+        <h2>文件命名规范</h2>
+        <ul>
+          <li>使用小写字母，单词间用连字符 <code>-</code> 分隔</li>
+          <li>运行时检测文件使用下划线前缀：<code>_detect.md</code></li>
+          <li>每个 sub-skill 文件应自包含：说明、示例、边界条件</li>
+        </ul>
+      </div>
+    </main>
+  </div>
+
+  <div class="sidebar-overlay" onclick="document.querySelector('.doc-sidebar').classList.remove('open');this.classList.remove('show')"></div>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

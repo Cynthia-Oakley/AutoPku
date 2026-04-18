@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>快速开始 - AutoPku</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/main.js"></script>
+</head>
+<body>
+  <!-- 固定顶部导航 -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo">
+        <div class="logo-icon">🤖</div>
+        <span>AutoPku</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../index.html">首页</a></li>
+          <li><a href="./index.html" class="active">使用指南</a></li>
+          <li><a href="../dev/index.html">一起共建</a></li>
+          <li><a href="https://github.com/ICUlizhi/AutoPku" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        </ul>
+      </nav>
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <button class="mobile-menu-btn" aria-label="菜单">☰</button>
+        <button class="theme-toggle" aria-label="切换主题">
+          <span class="icon-sun" style="display:none;">☀️</span>
+          <span class="icon-moon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 文档布局 -->
+  <div class="doc-layout">
+    <!-- 左侧边栏 -->
+    <aside class="doc-sidebar">
+      <div class="sidebar-title">使用指南</div>
+      <ul class="sidebar-nav">
+        <li><a href="./index.html">概述</a></li>
+        <li><a href="./quickstart.html" class="active">快速开始</a></li>
+        <li><a href="./features.html">功能详解</a></li>
+        <li><a href="./faq.html">常见问题</a></li>
+      </ul>
+      <div class="sidebar-title">更多</div>
+      <ul class="sidebar-nav">
+        <li><a href="../dev/index.html">一起共建 →</a></li>
+        <li><a href="../index.html">← 返回首页</a></li>
+      </ul>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="doc-main">
+      <div class="doc-content">
+        <h1 class="gradient-text">快速开始</h1>
+        <p>本指南将带你从零开始配置 AutoPku 环境，并在 5 分钟内完成第一条指令的下达。</p>
+
+        <h2>环境准备</h2>
+        <ul>
+          <li>macOS / Linux 系统（Windows 需 WSL）</li>
+          <li>已安装 <code>git</code>、<code>python3</code>、<code>node</code></li>
+          <li>已安装任一支持的 AI 运行时（Claude Code / Codex / Kimi Code CLI）</li>
+          <li>北京大学教学网账号</li>
+        </ul>
+
+        <h2>五步上手</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h4>下载仓库</h4>
+              <p>将 AutoPku 克隆到本地工作目录。</p>
+              <div class="code-block">
+                <div class="code-header">
+                  <span class="code-lang">bash</span>
+                  <button class="code-copy"><span>📋</span> 复制</button>
+                </div>
+                <pre><code>git clone https://github.com/your-org/autopku.git ~/autopku
+cd ~/autopku</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h4>配置 AI 运行时</h4>
+              <p>以 Claude Code 为例，在 <code>~/.claude/settings.json</code> 中添加项目路径与权限：</p>
+              <div class="code-block">
+                <div class="code-header">
+                  <span class="code-lang">json</span>
+                  <button class="code-copy"><span>📋</span> 复制</button>
+                </div>
+                <pre><code>{
+  "allowedTools": [
+    "Bash",
+    "Read",
+    "Write",
+    "Edit"
+  ],
+  "projectPaths": [
+    "~/autopku"
+  ],
+  "autoRun": false
+}</code></pre>
+              </div>
+              <p>其他运行时请参考各自文档配置项目访问权限。</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h4>安装 pku3b 依赖</h4>
+              <p>pku3b 是连接北京大学教学网的核心工具，AutoPku 通过它抓取课程数据。</p>
+              <div class="code-block">
+                <div class="code-header">
+                  <span class="code-lang">bash</span>
+                  <button class="code-copy"><span>📋</span> 复制</button>
+                </div>
+                <pre><code>pip install pku3b
+# 或
+uv pip install pku3b</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <h4>首次登录</h4>
+              <p>使用 expect 脚本完成教学网的自动登录，保存 Cookie 供后续使用。</p>
+              <div class="code-block">
+                <div class="code-header">
+                  <span class="code-lang">bash</span>
+                  <button class="code-copy"><span>📋</span> 复制</button>
+                </div>
+                <pre><code>#!/usr/bin/expect -f
+set timeout 30
+spawn pku3b login
+expect "Username:"
+send "你的学号\r"
+expect "Password:"
+send "你的密码\r"
+expect eof</code></pre>
+              </div>
+              <div class="callout info">
+                <div class="callout-title">ℹ️ 关于密码安全</div>
+                <p>密码仅在本地 expect 脚本中使用，不会上传到任何第三方服务。建议将脚本文件权限设为 <code>chmod 600 login.exp</code>。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">5</div>
+            <div class="step-content">
+              <h4>下达第一条指令</h4>
+              <p>打开你的 AI 运行时，进入 AutoPku 项目目录，直接用自然语言说出需求：</p>
+              <div class="code-block">
+                <div class="code-header">
+                  <span class="code-lang">text</span>
+                  <button class="code-copy"><span>📋</span> 复制</button>
+                </div>
+                <pre><code>帮我同步这周的教学网通知</code></pre>
+              </div>
+              <p>或：</p>
+              <div class="code-block">
+                <div class="code-header">
+                  <span class="code-lang">text</span>
+                  <button class="code-copy"><span>📋</span> 复制</button>
+                </div>
+                <pre><code>量子力学的第五次作业还没做，帮我搞定</code></pre>
+              </div>
+              <p>Agent Team 会自动分解任务、调用工具、执行流程，并在关键节点向你汇报进度。</p>
+            </div>
+          </div>
+        </div>
+
+        <h2>验证安装</h2>
+        <p>成功执行第一条指令后，你将在项目目录下看到新生成的课程文件夹。如果同步了通知，可以检查以下目录结构：</p>
+        <div class="file-tree">
+<span class="dir">courses/</span>
+├── <span class="dir">操作系统/</span>
+│   ├── <span class="dir">assignments/</span>
+│   ├── <span class="dir">announcements/</span>
+│   └── <span class="dir">notes/</span>
+├── <span class="dir">量子力学/</span>
+│   ├── <span class="dir">assignments/</span>
+│   └── <span class="file">hw05_solution.pdf</span>
+└── <span class="comment">... 其他课程</span>
+        </div>
+
+        <div class="callout success">
+          <div class="callout-title">🎉 恭喜</div>
+          <p>AutoPku 已经成功运行。你可以继续阅读 <a href="./features.html">功能详解</a> 了解每个模式的详细流程，或查看 <a href="./faq.html">常见问题</a> 解决使用中的疑惑。</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 移动端遮罩 -->
+  <div class="sidebar-overlay" onclick="document.querySelector('.doc-sidebar').classList.remove('open');this.classList.remove('show')"></div>
+</body>
+</html>

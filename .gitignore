@@ -14,6 +14,11 @@
 !/codex/**/*
 !/images
 !/archive/
+!/docs/
+!/docs/*/
+!/docs/*/*/
+!/docs/*/*/*/
+!/docs/*/*/*/*
 # 汇总报告（自动生成）
 通知摘要汇总.md
 

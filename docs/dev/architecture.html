@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>架构设计 — AutoPku</title>
+  <meta name="description" content="AutoPku 系统架构设计：环境检测、任务路由、Agent Team 协作与数据流">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">&#9632;</span>
+        <span>AutoPku</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../index.html">首页</a></li>
+          <li><a href="../user/index.html">使用指南</a></li>
+          <li><a href="./index.html" class="active">一起共建</a></li>
+          <li><a href="https://github.com/ICUlizhi/AutoPku" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        </ul>
+      </nav>
+      <div style="display:flex;align-items:center;gap:var(--space-4);">
+        <button class="theme-toggle" aria-label="切换主题">
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+        <button class="mobile-menu-btn" aria-label="菜单">&#9776;</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="doc-layout">
+    <aside class="doc-sidebar">
+      <div class="sidebar-title">一起共建</div>
+      <ul class="sidebar-nav">
+        <li><a href="./index.html">一起共建首页</a></li>
+        <li><a href="./prepare.html">准备工作</a></li>
+        <li><a href="./workflow.html">开发全流程</a></li>
+        <li><a href="./changelog.html">更新日志</a></li>
+      </ul>
+      <div class="sidebar-title">进阶</div>
+      <ul class="sidebar-nav">
+        <li><a href="./architecture.html" class="active">架构设计</a></li>
+        <li><a href="./subskills.html">Sub-skills 参考</a></li>
+      </ul>
+      <div class="sidebar-title">更多</div>
+      <ul class="sidebar-nav">
+        <li><a href="../user/index.html">使用者指南 &#8594;</a></li>
+        <li><a href="../index.html">&#8592; 返回首页</a></li>
+      </ul>
+    </aside>
+
+    <main class="doc-main">
+      <div class="doc-content">
+        <h1 class="gradient-text">架构设计</h1>
+        <p>AutoPku 采用"主入口 + 模块化 Sub-skills"的分层架构，通过运行时抽象层屏蔽不同 AI 平台的差异，实现一套代码多平台运行。</p>
+
+        <h2>整体架构</h2>
+        <div class="file-tree">
+<span class="dir">AutoPku/</span>
+&#9500;&#9472;&#9472; <span class="file">skill.md</span>              <span class="comment"># 主入口：意图识别 + 任务路由</span>
+&#9500;&#9472;&#9472; <span class="dir">sub-skills/</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="dir">runtime/</span>          <span class="comment"># AI 环境抽象层</span>
+&#9474;   &#9474;   &#9500;&#9472;&#9472; <span class="file">_detect.md</span>
+&#9474;   &#9474;   &#9500;&#9472;&#9472; <span class="file">create-agent.md</span>
+&#9474;   &#9474;   &#9500;&#9472;&#9472; <span class="file">claude-team.md</span>
+&#9474;   &#9474;   &#9500;&#9472;&#9472; <span class="file">codex-subagent.md</span>
+&#9474;   &#9474;   &#9492;&#9472;&#9472; <span class="file">kimi-team.md</span>
+&#9474;   &#9500;&#9472;&#9472; <span class="dir">tools/</span>            <span class="comment"># 可复用工具</span>
+&#9474;   &#9474;   &#9500;&#9472;&#9472; <span class="file">pku3b-setup.md</span>
+&#9474;   &#9474;   &#9500;&#9472;&#9472; <span class="file">data-parser.md</span>
+&#9474;   &#9474;   &#9500;&#9472;&#9472; <span class="file">pdf-reader.md</span>
+&#9474;   &#9474;   &#9492;&#9472;&#9472; <span class="file">agent-helpers.md</span>
+&#9474;   &#9492;&#9472;&#9472; <span class="dir">tasks/</span>            <span class="comment"># 任务执行流</span>
+&#9474;       &#9500;&#9472;&#9472; <span class="file">sync-notices.md</span>
+&#9474;       &#9500;&#9472;&#9472; <span class="file">do-homework.md</span>
+&#9474;       &#9492;&#9472;&#9472; <span class="file">write-notes.md</span>
+&#9492;&#9472;&#9472; <span class="dir">docs/</span>                 <span class="comment"># 文档站点</span>
+        </div>
+
+        <h2>执行架构</h2>
+        <h3>1. 环境检测（_detect.md）</h3>
+        <p>系统启动时，通过读取环境变量自动判断当前所在的 AI 运行时：</p>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">python</span>
+            <button class="code-copy"><span>&#128203;</span> 复制</button>
+          </div>
+          <pre><code>if os.environ.get("CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS"):
+    RUNTIME = "claude"
+elif os.environ.get("CODEX") == "1":
+    RUNTIME = "codex"
+elif os.environ.get("KIMI_CODE_CLI") == "1" or shutil.which("kimi"):
+    RUNTIME = "kimi"
+else:
+    RUNTIME = "serial"</code></pre>
+        </div>
+        <p>检测结果被缓存，后续所有 Agent 创建操作均依据 <code>RUNTIME</code> 的值选择对应语法。</p>
+
+        <h3>2. 任务路由（skill.md）</h3>
+        <p>主入口 <code>skill.md</code> 负责接收用户的自然语言输入，通过关键词和意图匹配将请求路由到对应的 task sub-skill：</p>
+        <ul>
+          <li>"看看有什么新通知" &#8594; <code>tasks/sync-notices.md</code></li>
+          <li>"帮我把作业做了" &#8594; <code>tasks/do-homework.md</code></li>
+          <li>"整理一下这节课的笔记" &#8594; <code>tasks/write-notes.md</code></li>
+        </ul>
+
+        <h3>3. Agent 创建（create-agent.md）</h3>
+        <p><code>runtime/create-agent.md</code> 提供统一的跨平台 Agent 创建接口。不同运行时的底层语法差异被封装在这一层，task 开发者只需调用统一接口即可创建 Coordinator、Parser、Solver 等角色。</p>
+
+        <h2>Agent Team 单课程结构</h2>
+        <p>对于每门课程的任务，系统会动态构建一个 Agent Team，各角色分工如下：</p>
+        <div class="file-tree">
+<span class="dir">Course Agent Team/</span>
+&#9500;&#9472;&#9472; <span class="file">coordinator</span>      <span class="comment"># 调度中枢，分配任务、汇总结果</span>
+&#9500;&#9472;&#9472; <span class="file">pdf_parser</span>       <span class="comment"># 解析 PDF 题目，提取文本与结构</span>
+&#9500;&#9472;&#9472; <span class="file">solver</span>           <span class="comment"># 解答题目，生成答案内容</span>
+&#9500;&#9472;&#9472; <span class="file">writer</span>           <span class="comment"># 将答案整理为规范 Markdown</span>
+&#9500;&#9472;&#9472; <span class="file">renderer</span>         <span class="comment"># Markdown &#8594; PDF 渲染（含 LaTeX）</span>
+&#9492;&#9472;&#9472; <span class="file">portal_submitter</span> <span class="comment"># 提交至教学网，等待用户最终确认</span>
+        </div>
+
+        <h2>数据流图</h2>
+        <p>以"完成作业"任务为例，数据在各 Agent 间的流转路径如下：</p>
+        <ol>
+          <li><strong>用户输入</strong>：自然语言描述需求（如"做完高数作业"）</li>
+          <li><strong>主入口路由</strong>：<code>skill.md</code> 识别意图，触发 <code>tasks/do-homework.md</code></li>
+          <li><strong>环境检测</strong>：<code>runtime/_detect.md</code> 确定当前平台语法</li>
+          <li><strong>获取作业</strong>：通过 pku3b CLI 下载作业 PDF 附件</li>
+          <li><strong>PDF 解析</strong>：<code>pdf_parser</code> 提取题目文本与结构</li>
+          <li><strong>题目解答</strong>：<code>solver</code> 基于解析内容生成答案</li>
+          <li><strong>文档整理</strong>：<code>writer</code> 将答案组织为 Markdown 格式</li>
+          <li><strong>PDF 渲染</strong>：<code>renderer</code> 将 Markdown 转换为 PDF 文件</li>
+          <li><strong>用户确认</strong>：展示答案预览，等待用户确认或修改</li>
+          <li><strong>作业提交</strong>：<code>portal_submitter</code> 将最终文件提交至教学网</li>
+        </ol>
+
+        <div class="callout warning">
+          <div class="callout-title">&#9888;&#65039; 安全规则</div>
+          <p>以下行为在 AutoPku 架构中被严格禁止：</p>
+          <ul>
+            <li>任何涉及密码的输入或传输均不得回显或记录到日志</li>
+            <li>作业提交操作前必须展示预览并等待用户显式确认（Y/n）</li>
+            <li>Agent 不得在未授权情况下修改或删除用户本地文件</li>
+            <li>教学网敏感操作（提交、退课等）必须保留人工审核节点</li>
+          </ul>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="sidebar-overlay" onclick="document.querySelector('.doc-sidebar').classList.remove('open');this.classList.remove('show')"></div>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
