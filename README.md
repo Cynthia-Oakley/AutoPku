@@ -1,12 +1,25 @@
-# AutoPku
+<p align="center">
+  <img src="images/icon.png" alt="AutoPku Logo" width="120">
+</p>
 
-> 北京大学本科全自动解决方案 | 从通知获取到作业提交，全程 Agent Team 托管
+<h1 align="center">AutoPku</h1>
 
+<p align="center">
+  <strong>北京大学本科全自动解决方案</strong><br>
+  从通知获取到作业提交，全程 Agent Team 托管
+</p>
 
+<p align="center">
+  <a href="https://autopku.com" target="_blank">📖 Autopku.com</a>
+  ·
+  <a href="https://github.com/ICUlizhi/AutoPku" target="_blank">🐙 GitHub</a>
+</p>
 
-**只需学号密码 → AI 自动完成一切**
+<p align="center"><strong>只需学号密码 → AI 自动完成一切</strong></p>
 
-![](images/pipeline.png)
+<p align="center">
+  <img src="images/pipeline.png" alt="pipeline" width="80%">
+</p>
 
 
 ---
